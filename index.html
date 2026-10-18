@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101a18">
+  <title>Alchemy Factory Planner</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./"><span class="brand-mark">AF</span><span><strong>ALCHEMY FACTORY</strong><small>LOGISTICS & PLANNING</small></span></a>
+    <div class="source-tag"><span class="dot"></span> Calculator database · v1.1</div>
+  </header>
+  <main class="shell">
+    <section class="hero">
+      <div class="eyebrow">INDUSTRIAL INTELLIGENCE / 01</div>
+      <h1>Plan the flow.<br><em>Master the factory.</em></h1>
+      <p>Explore recipes, estimate per-minute production, and trace the materials behind your target output.</p>
+      <div class="hero-meta"><span>DATASET <b id="db-version">Loading…</b></span><span>ITEMS <b id="item-count">—</b></span><span>RECIPES <b id="recipe-count">—</b></span></div>
+    </section>
+    <nav class="tabs" aria-label="Planner sections">
+      <button class="tab active" data-tab="planner">Production planner</button>
+      <button class="tab" data-tab="recipes">Recipe explorer</button>
+      <button class="tab" data-tab="skills">Skill allocation</button>
+      <button class="tab" data-tab="data">Database health</button>
+    </nav>
+    <section id="panel-planner" class="panel active">
+      <div class="section-head"><div><div class="eyebrow">TARGET ANALYSIS</div><h2>Production planner</h2></div><span class="pill">Rates shown per minute</span></div>
+      <div class="planner-grid">
+        <div class="control-card">
+          <label for="target-item">Target item</label><select id="target-item"></select>
+          <label for="target-rate">Desired output / min</label><input id="target-rate" type="number" min="0.01" step="any" value="120">
+          <label for="recipe-select">Production recipe</label><select id="recipe-select"></select>
+          <div class="small-note">Base-rate estimate assumes recipe <code>baseTime</code> is measured in seconds. Skill, fuel, fertilizer, and machine modifiers are not applied unless their formulas are explicitly modeled.</div>
+          <button id="calculate" class="primary">Calculate production</button>
+        </div>
+        <div class="results-card">
+          <div class="eyebrow">ESTIMATED REQUIREMENT</div>
+          <div class="result-number" id="machine-count">— <small>machines</small></div>
+          <div id="result-summary" class="result-summary">Choose a target and recipe to calculate.</div>
+          <div id="rate-details" class="rate-details"></div>
+        </div>
+      </div>
+      <div class="subhead"><h3>Recipe inputs at target rate</h3><span class="muted">Calculated from selected recipe</span></div>
+      <div id="inputs-table" class="table-wrap empty-state">Select a valid recipe to see required inputs.</div>
+      <div id="other-outputs" class="notice hidden"></div>
+    </section>
+    <section id="panel-recipes" class="panel">
+      <div class="section-head"><div><div class="eyebrow">DATABASE BROWSER</div><h2>Recipe explorer</h2></div><span id="recipe-total" class="pill"></span></div>
+      <div class="search-row"><input id="recipe-search" type="search" placeholder="Search recipe, item, or machine…"><select id="machine-filter"><option value="">All machines</option></select></div>
+      <div id="recipe-list" class="recipe-list"></div>
+    </section>
+    <section id="panel-skills" class="panel">
+      <div class="section-head"><div><div class="eyebrow">PLAYER CONFIGURATION</div><h2>Skill allocation</h2></div><span class="pill">Editable local draft</span></div>
+      <p class="muted intro">Enter your current skill points here to keep a reusable allocation alongside the plan. The calculator database does not define the complete skill tree or verified production formulas, so these values are saved only in this page session and are not applied to rate estimates yet.</p>
+      <div class="skill-toolbar"><label for="skill-total">Available points <input id="skill-total" type="number" min="0" step="1" value="0"></label><button id="reset-skills" class="secondary">Reset allocation</button></div>
+      <div id="skill-fields" class="skill-grid"></div>
+      <div id="skill-summary" class="notice"></div>
+    </section>
+    <section id="panel-data" class="panel">
+      <div class="section-head"><div><div class="eyebrow">VALIDATION REPORT</div><h2>Database health</h2></div><span id="health-status" class="pill">Checking…</span></div>
+      <div id="health-grid" class="health-grid"></div>
+      <div class="notice">Source of game data: the user-provided Alchemy Factory Calculator dataset (version and date shown above). Validation checks structural consistency; it does not independently prove that every value matches the live game.</div>
+    </section>
+    <footer><span>ALCHEMY FACTORY PLANNER</span><span>Source-first · Rates per minute · No unverified skill multipliers</span></footer>
+  </main>
+  <script src="./js/database.js"></script>
+  <script src="./js/planner.js"></script>
+</body>
+</html>
